@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ShoppingBag, Package, Tag, Users, Percent, Mail, Image, LogOut } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Package, Tag, Users, Percent, Mail, Image, Home, LogOut } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
@@ -11,6 +11,7 @@ const allLinks = [
   { href: "/products",        label: "Products",       icon: Package,         adminOnly: true  },
   { href: "/categories",      label: "Categories",     icon: Tag,             adminOnly: true  },
   { href: "/editorials",      label: "Editorials",     icon: Image,           adminOnly: true  },
+  { href: "/homepage",        label: "Homepage",       icon: Home,            adminOnly: true  },
   { href: "/customers",       label: "Customers",      icon: Users,           adminOnly: true  },
   { href: "/discount-codes",  label: "Discount Codes", icon: Percent,         adminOnly: true  },
   { href: "/marketing",       label: "Marketing",      icon: Mail,            adminOnly: true  },
