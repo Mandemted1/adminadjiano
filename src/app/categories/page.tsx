@@ -4,7 +4,7 @@ import { Trash2, Pencil, Check, X } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import AdminShell from "@/components/AdminShell";
 
-interface Category { id: string; name: string; description: string | null; parent_id: string | null; created_at: string; count?: number; }
+interface Category { id: string; name: string; description: string | null; parent_id: string | null; homepage_label: string | null; created_at: string; count?: number; }
 
 const inp: React.CSSProperties = { border: "1px solid #e0e0e0", padding: "0.65rem 0.875rem", fontFamily: "var(--font-montserrat)", fontSize: "11px", color: "#000", outline: "none", backgroundColor: "#fff", width: "100%" };
 const lbl: React.CSSProperties = { fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 500, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888", display: "block", marginBottom: "0.35rem" };
@@ -14,7 +14,8 @@ export default function CategoriesPage() {
   const [loading, setLoading] = useState(true);
   const [form, setForm]       = useState({ name: "", description: "", parent_id: "" });
   const [editId, setEditId]   = useState<string | null>(null);
-  const [editName, setEditName] = useState("");
+  const [editName, setEditName]           = useState("");
+  const [editHomepageLabel, setEditHomepageLabel] = useState("");
   const [saving, setSaving]   = useState(false);
   const [error, setError]     = useState("");
 
@@ -47,8 +48,17 @@ export default function CategoriesPage() {
   };
 
   const handleEdit = async (id: string) => {
-    await supabase.from("categories").update({ name: editName }).eq("id", id);
+    await supabase.from("categories").update({
+      name: editName,
+      homepage_label: editHomepageLabel.trim() || null,
+    }).eq("id", id);
     setEditId(null); load();
+  };
+
+  const startEdit = (cat: Category) => {
+    setEditId(cat.id);
+    setEditName(cat.name);
+    setEditHomepageLabel(cat.homepage_label ?? "");
   };
 
   const handleDelete = async (id: string) => {
@@ -65,7 +75,6 @@ export default function CategoriesPage() {
       tree.push(child);
     }
   }
-  // Add any orphaned children (parent deleted)
   for (const cat of cats.filter((c) => c.parent_id && !parents.find((p) => p.id === c.parent_id))) {
     tree.push(cat);
   }
@@ -106,8 +115,8 @@ export default function CategoriesPage() {
 
         {/* List */}
         <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 80px", padding: "0.75rem 1.25rem", borderBottom: "1px solid #f0f0f0", backgroundColor: "#fafafa" }}>
-            {["Category", "Products", ""].map((h) => (
+          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 80px", padding: "0.75rem 1.25rem", borderBottom: "1px solid #f0f0f0", backgroundColor: "#fafafa" }}>
+            {["Category", "Products", "Homepage Label", ""].map((h) => (
               <span key={h} style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888" }}>{h}</span>
             ))}
           </div>
@@ -115,10 +124,14 @@ export default function CategoriesPage() {
           {tree.map((cat) => {
             const isChild = !!cat.parent_id;
             return (
-              <div key={cat.id} style={{ display: "grid", gridTemplateColumns: "2fr 1fr 80px", padding: "0.85rem 1.25rem", borderBottom: "1px solid #f0f0f0", alignItems: "center", backgroundColor: isChild ? "#fafafa" : "#fff" }}>
+              <div key={cat.id} style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 80px", padding: "0.85rem 1.25rem", borderBottom: "1px solid #f0f0f0", alignItems: "center", backgroundColor: isChild ? "#fafafa" : "#fff" }}>
                 {editId === cat.id ? (
                   <>
-                    <input value={editName} onChange={(e) => setEditName(e.target.value)} style={{ ...inp, padding: "0.4rem 0.6rem", fontSize: "10px" }} autoFocus />
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                      <input value={editName} onChange={(e) => setEditName(e.target.value)} placeholder="Name" style={{ ...inp, padding: "0.4rem 0.6rem", fontSize: "10px" }} autoFocus />
+                      <input value={editHomepageLabel} onChange={(e) => setEditHomepageLabel(e.target.value)} placeholder="Homepage label (optional)" style={{ ...inp, padding: "0.4rem 0.6rem", fontSize: "10px" }} />
+                    </div>
+                    <span />
                     <span />
                     <div style={{ display: "flex", gap: "0.4rem" }}>
                       <button onClick={() => handleEdit(cat.id)} style={{ background: "none", border: "none", cursor: "pointer", color: "#2e7d32" }}><Check size={14} strokeWidth={2} /></button>
@@ -133,8 +146,11 @@ export default function CategoriesPage() {
                       <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", color: "#bbb", marginTop: "2px", paddingLeft: isChild ? "0.9rem" : "0" }}>{cat.id}</p>
                     </div>
                     <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", color: "#555" }}>{cat.count}</p>
+                    <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", color: cat.homepage_label ? "#000" : "#ddd", fontStyle: cat.homepage_label ? "normal" : "italic" }}>
+                      {cat.homepage_label ?? "—"}
+                    </p>
                     <div style={{ display: "flex", gap: "0.5rem" }}>
-                      <button onClick={() => { setEditId(cat.id); setEditName(cat.name); }} style={{ background: "none", border: "none", cursor: "pointer", color: "#555" }}><Pencil size={13} strokeWidth={1.5} /></button>
+                      <button onClick={() => startEdit(cat)} style={{ background: "none", border: "none", cursor: "pointer", color: "#555" }}><Pencil size={13} strokeWidth={1.5} /></button>
                       <button onClick={() => handleDelete(cat.id)} style={{ background: "none", border: "none", cursor: "pointer", color: "#c62828" }}><Trash2 size={13} strokeWidth={1.5} /></button>
                     </div>
                   </>
@@ -144,6 +160,10 @@ export default function CategoriesPage() {
           })}
         </div>
       </div>
+
+      <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", color: "#aaa", letterSpacing: "0.08em", marginTop: "1rem" }}>
+        Set a Homepage Label on up to 3 top-level categories to control what appears in the big text menu on the homepage.
+      </p>
     </AdminShell>
   );
 }
