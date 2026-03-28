@@ -2,14 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { supabaseAdmin } from "@/lib/supabase-server";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 
-const statusLabel: Record<string, string> = {
-  processing: "Processing",
-  in_transit: "In Transit",
-  delivered:  "Delivered",
-  cancelled:  "Cancelled",
-};
 
 function buildEmail(order: {
   id: string;
@@ -137,6 +130,7 @@ export async function POST(
   if (toEmail) {
     const email = buildEmail(order);
     if (email) {
+      const resend = new Resend(process.env.RESEND_API_KEY);
       await resend.emails.send({
         from: process.env.RESEND_FROM_EMAIL ?? "Adjiano <orders@adjiano.com>",
         to: toEmail,
