@@ -17,6 +17,7 @@ export default function CategoriesPage() {
   const [editName, setEditName]           = useState("");
   const [editHomepageLabel, setEditHomepageLabel] = useState("");
   const [saving, setSaving]   = useState(false);
+  const [editSaving, setEditSaving] = useState(false);
   const [error, setError]     = useState("");
 
   const load = async () => {
@@ -34,7 +35,7 @@ export default function CategoriesPage() {
 
   const parents = cats.filter((c) => !c.parent_id);
 
-  const handleCreate = async (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); setError(""); setSaving(true);
     const id = form.name.trim().toLowerCase().replace(/\s+/g, "-");
     const { error: err } = await supabase.from("categories").insert({
@@ -48,11 +49,14 @@ export default function CategoriesPage() {
   };
 
   const handleEdit = async (id: string) => {
+    setEditSaving(true);
     await supabase.from("categories").update({
       name: editName,
       homepage_label: editHomepageLabel.trim() || null,
     }).eq("id", id);
-    setEditId(null); load();
+    setEditSaving(false);
+    setEditId(null);
+    load();
   };
 
   const startEdit = (cat: Category) => {
@@ -134,7 +138,7 @@ export default function CategoriesPage() {
                     <span />
                     <span />
                     <div style={{ display: "flex", gap: "0.4rem" }}>
-                      <button onClick={() => handleEdit(cat.id)} style={{ background: "none", border: "none", cursor: "pointer", color: "#2e7d32" }}><Check size={14} strokeWidth={2} /></button>
+                      <button onClick={() => handleEdit(cat.id)} disabled={editSaving} style={{ background: "none", border: "none", cursor: editSaving ? "default" : "pointer", color: editSaving ? "#bbb" : "#2e7d32", opacity: editSaving ? 0.5 : 1 }}><Check size={14} strokeWidth={2} /></button>
                       <button onClick={() => setEditId(null)} style={{ background: "none", border: "none", cursor: "pointer", color: "#888" }}><X size={14} strokeWidth={2} /></button>
                     </div>
                   </>

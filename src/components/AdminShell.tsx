@@ -13,13 +13,15 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { router.replace("/login"); return; }
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) { router.replace("/login"); return; }
 
       const res = await fetch("/api/auth/admin-check", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user.id }),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.access_token}`,
+        },
       });
 
       if (!res.ok) { await supabase.auth.signOut(); router.replace("/login"); return; }

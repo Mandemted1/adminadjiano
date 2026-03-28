@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { getSupabaseAdmin } from "@/lib/supabase-server";
+import { requireAdmin } from "@/lib/auth-guard";
 
 
 
@@ -95,6 +96,9 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const admin = await requireAdmin(req);
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   const { id } = await params;
   const { status } = await req.json();
 

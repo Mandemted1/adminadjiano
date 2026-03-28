@@ -25,6 +25,14 @@ export default function ProductsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this product?")) return;
+    const { count } = await supabase
+      .from("order_items")
+      .select("*", { count: "exact", head: true })
+      .eq("product_id", id);
+    if (count && count > 0) {
+      alert(`Cannot delete — this product appears in ${count} order(s).`);
+      return;
+    }
     await supabase.from("products").delete().eq("id", id);
     setProducts((p) => p.filter((x) => x.id !== id));
   };

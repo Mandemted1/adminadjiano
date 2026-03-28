@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import AdminShell from "@/components/AdminShell";
+import { supabase } from "@/lib/supabase";
 
 const inp: React.CSSProperties = { width: "100%", border: "1px solid #e0e0e0", padding: "0.75rem 0.875rem", fontFamily: "var(--font-montserrat)", fontSize: "11px", letterSpacing: "0.06em", color: "#000", outline: "none", backgroundColor: "#fff" };
 const lbl: React.CSSProperties = { fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 500, letterSpacing: "0.18em", textTransform: "uppercase", color: "#888", marginBottom: "0.4rem", display: "block" };
@@ -12,14 +13,18 @@ export default function MarketingPage() {
   const [sending,  setSending]  = useState(false);
   const [result,   setResult]   = useState<{ sent?: number; error?: string } | null>(null);
 
-  const handleSend = async (e: React.FormEvent) => {
+  const handleSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!confirm(`Send this email to all ${segment === "all" ? "customers" : "recent customers"}?`)) return;
     setSending(true); setResult(null);
 
+    const { data: { session } } = await supabase.auth.getSession();
     const res = await fetch("/api/marketing/send", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${session?.access_token ?? ""}`,
+      },
       body: JSON.stringify({ subject, message, segment }),
     });
     const data = await res.json();
