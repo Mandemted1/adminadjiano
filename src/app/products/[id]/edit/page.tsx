@@ -1,11 +1,11 @@
-import { supabaseAdmin } from "@/lib/supabase-server";
+import { getSupabaseAdmin } from "@/lib/supabase-server";
 import AdminShell from "@/components/AdminShell";
 import ProductForm from "@/components/ProductForm";
 import type { Product } from "@/lib/types";
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { data } = await supabaseAdmin.from("products").select("*").eq("id", id).single();
+  const { data } = await getSupabaseAdmin().from("products").select("*").eq("id", id).single();
   if (!data) return <AdminShell><p style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", color: "#bbb" }}>Product not found.</p></AdminShell>;
   return (
     <AdminShell>

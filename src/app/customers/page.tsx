@@ -1,12 +1,13 @@
-import { supabaseAdmin } from "@/lib/supabase-server";
+import { getSupabaseAdmin } from "@/lib/supabase-server";
 import AdminShell from "@/components/AdminShell";
 
 export default async function CustomersPage() {
-  const { data: orders } = await supabaseAdmin
+  const db = getSupabaseAdmin();
+  const { data: orders } = await db
     .from("orders")
     .select("guest_email, user_id, total, status");
 
-  const { data: profiles } = await supabaseAdmin
+  const { data: profiles } = await db
     .from("profiles")
     .select("id, full_name");
 

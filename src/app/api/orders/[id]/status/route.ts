@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { supabaseAdmin } from "@/lib/supabase-server";
+import { getSupabaseAdmin } from "@/lib/supabase-server";
 
 
 
@@ -99,7 +99,7 @@ export async function POST(
   const { status } = await req.json();
 
   // Update status in DB
-  const { error: updateErr } = await supabaseAdmin
+  const { error: updateErr } = await getSupabaseAdmin()
     .from("orders")
     .update({ status })
     .eq("id", id);
@@ -107,7 +107,7 @@ export async function POST(
   if (updateErr) return NextResponse.json({ error: updateErr.message }, { status: 500 });
 
   // Fetch full order for email
-  const { data: order } = await supabaseAdmin
+  const { data: order } = await getSupabaseAdmin()
     .from("orders")
     .select("*, order_items(*)")
     .eq("id", id)
@@ -118,7 +118,7 @@ export async function POST(
   // Get customer email
   let toEmail = order.guest_email;
   if (!toEmail && order.user_id) {
-    const { data: profile } = await supabaseAdmin
+    const { data: profile } = await getSupabaseAdmin()
       .from("profiles")
       .select("email")
       .eq("id", order.user_id)

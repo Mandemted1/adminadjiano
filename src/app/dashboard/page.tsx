@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "@/lib/supabase-server";
+import { getSupabaseAdmin } from "@/lib/supabase-server";
 import AdminShell from "@/components/AdminShell";
 
 const statusColor: Record<string, string> = {
@@ -9,9 +9,10 @@ const statusLabel: Record<string, string> = {
 };
 
 export default async function DashboardPage() {
+  const db = getSupabaseAdmin();
   const [ordersRes, itemsRes] = await Promise.all([
-    supabaseAdmin.from("orders").select("id, total, status, created_at, guest_email, user_id"),
-    supabaseAdmin.from("order_items").select("name, quantity"),
+    db.from("orders").select("id, total, status, created_at, guest_email, user_id"),
+    db.from("order_items").select("name, quantity"),
   ]);
 
   const orders = ordersRes.data ?? [];

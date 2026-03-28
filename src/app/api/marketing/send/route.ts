@@ -1,23 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { supabaseAdmin } from "@/lib/supabase-server";
+import { getSupabaseAdmin } from "@/lib/supabase-server";
 
 export async function POST(req: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const { subject, message, segment } = await req.json();
   if (!subject || !message) return NextResponse.json({ error: "Subject and message required" }, { status: 400 });
 
+  const db = getSupabaseAdmin();
+
   // Collect all customer emails
-  const { data: orders } = await supabaseAdmin
+  const { data: orders } = await db
     .from("orders")
     .select("guest_email, user_id, status, created_at")
     .neq("status", "cancelled");
 
   // Get profile emails for account users
-  const userIds = [...new Set((orders ?? []).filter((o) => o.user_id).map((o) => o.user_id))];
+  const userIds = [...new Set((orders ?? []).filter((o: { user_id: string | null }) => o.user_id).map((o: { user_id: string }) => o.user_id))];
   const profileEmails: Record<string, string> = {};
   if (userIds.length > 0) {
-    const { data: profiles } = await supabaseAdmin
+    const { data: profiles } = await db
       .from("profiles")
       .select("id, email")
       .in("id", userIds);

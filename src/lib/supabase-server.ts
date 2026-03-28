@@ -1,7 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Server-only: never import this in "use client" components
-export const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// Returns a fresh client — only call this inside request handlers, never at module level
+export function getSupabaseAdmin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
