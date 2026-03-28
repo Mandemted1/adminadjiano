@@ -36,7 +36,8 @@ export default function OrdersPage() {
       </div>
 
       {/* Table */}
-      <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5" }}>
+      <div className="table-scroll">
+      <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5", minWidth: "560px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "2fr 2fr 1fr 1fr 1fr", padding: "0.75rem 1.25rem", borderBottom: "1px solid #f0f0f0", backgroundColor: "#fafafa" }}>
           {["Order", "Customer", "Total", "Status", ""].map((h) => (
             <span key={h} style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888" }}>{h}</span>
@@ -60,6 +61,7 @@ export default function OrdersPage() {
             </Link>
           </div>
         ))}
+      </div>
       </div>
     </AdminShell>
   );

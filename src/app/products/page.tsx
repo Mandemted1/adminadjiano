@@ -52,7 +52,8 @@ export default function ProductsPage() {
         </Link>
       </div>
 
-      <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5" }}>
+      <div className="table-scroll">
+      <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5", minWidth: "700px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "60px 2fr 1.5fr 1fr 1fr 1fr 1fr 80px", padding: "0.75rem 1.25rem", borderBottom: "1px solid #f0f0f0", backgroundColor: "#fafafa" }}>
           {["", "Product", "Collection", "Price", "Stock", "Featured", "Bestseller", ""].map((h, i) => (
             <span key={i} style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888" }}>{h}</span>
@@ -79,6 +80,7 @@ export default function ProductsPage() {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </AdminShell>
   );

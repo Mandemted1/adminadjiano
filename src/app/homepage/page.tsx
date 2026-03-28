@@ -70,7 +70,7 @@ export default function HomepagePage() {
         Manage the images in the Velvet Collection section.
       </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: "1.5rem", alignItems: "start" }}>
+      <div className="r-form-list">
 
         {/* Add form */}
         <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5", padding: "1.5rem" }}>

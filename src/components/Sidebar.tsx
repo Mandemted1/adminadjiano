@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ShoppingBag, Package, Tag, Users, Percent, Mail, Image, Home, LogOut } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Package, Tag, Users, Percent, Mail, Image, Home, LogOut, X } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
@@ -17,7 +17,7 @@ const allLinks = [
   { href: "/marketing",       label: "Marketing",      icon: Mail,            adminOnly: true  },
 ];
 
-export default function Sidebar({ role, email }: { role: "admin" | "staff"; email: string }) {
+export default function Sidebar({ role, email, onClose }: { role: "admin" | "staff"; email: string; onClose?: () => void }) {
   const pathname = usePathname();
   const router   = useRouter();
   const links    = role === "admin" ? allLinks : allLinks.filter((l) => !l.adminOnly);
@@ -30,9 +30,16 @@ export default function Sidebar({ role, email }: { role: "admin" | "staff"; emai
   return (
     <aside style={{ width: "220px", minHeight: "100vh", backgroundColor: "#000", display: "flex", flexDirection: "column", flexShrink: 0 }}>
       {/* Logo */}
-      <div style={{ padding: "2rem 1.5rem 1.5rem", borderBottom: "1px solid #222" }}>
-        <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "11px", fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: "#fff" }}>ADJIANO</p>
-        <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#555", marginTop: "3px" }}>Admin</p>
+      <div style={{ padding: "2rem 1.5rem 1.5rem", borderBottom: "1px solid #222", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div>
+          <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "11px", fontWeight: 600, letterSpacing: "0.3em", textTransform: "uppercase", color: "#fff" }}>ADJIANO</p>
+          <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#555", marginTop: "3px" }}>Admin</p>
+        </div>
+        {onClose && (
+          <button onClick={onClose} className="mobile-only" style={{ background: "none", border: "none", cursor: "pointer", color: "#666", display: "flex", alignItems: "center", padding: "2px", flexShrink: 0 }}>
+            <X size={16} strokeWidth={1.5} />
+          </button>
+        )}
       </div>
 
       {/* Nav */}

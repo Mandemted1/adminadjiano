@@ -80,7 +80,8 @@ export default function DiscountCodesPage() {
       </div>
 
       {/* Table */}
-      <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5" }}>
+      <div className="table-scroll">
+      <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5", minWidth: "520px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr 60px", padding: "0.75rem 1.25rem", borderBottom: "1px solid #f0f0f0", backgroundColor: "#fafafa" }}>
           {["Code", "% Off", "Uses", "Expires", "Active", ""].map((h) => (
             <span key={h} style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888" }}>{h}</span>
@@ -101,6 +102,7 @@ export default function DiscountCodesPage() {
             <button onClick={() => handleDelete(c.id)} style={{ background: "none", border: "none", cursor: "pointer", color: "#c62828", display: "flex", padding: 0 }}><Trash2 size={14} strokeWidth={1.5} /></button>
           </div>
         ))}
+      </div>
       </div>
     </AdminShell>
   );

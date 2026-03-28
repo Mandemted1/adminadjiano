@@ -47,7 +47,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
         <ChevronLeft size={12} strokeWidth={1.5} /> Orders
       </Link>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2rem" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2rem", gap: "1rem" }}>
         <div>
           <h1 style={{ fontFamily: "var(--font-inria)", fontSize: "2rem", fontWeight: 400 }}>#{order.id.slice(0,8).toUpperCase()}</h1>
           <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", color: "#888", marginTop: "4px" }}>
@@ -68,7 +68,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "1.5rem" }}>
+      <div className="r-content-320">
         {/* Items */}
         <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5", padding: "1.5rem" }}>
           <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "#000", marginBottom: "1.25rem" }}>Items</p>

@@ -3,3 +3,124 @@ body { font-family: var(--font-montserrat), sans-serif; background: #f7f7f7; col
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; }
 input, select, textarea { font-family: inherit; }
+
+/* ─── Admin shell ─── */
+.admin-shell { display: flex; min-height: 100vh; }
+
+.admin-sidebar-wrapper {
+  width: 220px;
+  flex-shrink: 0;
+}
+
+.admin-content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.admin-topbar {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 1rem;
+  height: 52px;
+  background: #000;
+  border-bottom: 1px solid #222;
+  flex-shrink: 0;
+}
+
+.admin-sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 45;
+}
+
+.admin-main-content {
+  flex: 1;
+  padding: 2.5rem;
+  overflow-y: auto;
+}
+
+/* ─── Responsive grid helpers ─── */
+/* Usage: add className, remove gridTemplateColumns from inline style */
+.r-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.r-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.r-form-list {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.r-content-320 {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1.5rem;
+}
+
+.r-content-380 {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* Scrollable table wrapper */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─── Mobile breakpoint ─── */
+@media (max-width: 768px) {
+  .admin-sidebar-wrapper {
+    position: fixed;
+    top: 0;
+    left: -220px;
+    height: 100%;
+    z-index: 50;
+    transition: left 0.25s ease;
+  }
+  .admin-sidebar-wrapper.sidebar-open {
+    left: 0;
+  }
+  .admin-sidebar-overlay.overlay-open {
+    display: block;
+  }
+  .admin-topbar {
+    display: flex;
+  }
+  .admin-main-content {
+    padding: 1.25rem 1rem;
+  }
+  .r-2col,
+  .r-3col,
+  .r-form-list,
+  .r-content-320,
+  .r-content-380 {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+  .mobile-hide {
+    display: none !important;
+  }
+  .mobile-only {
+    display: flex !important;
+  }
+}
+
+/* Hidden on desktop, shown on mobile via media query above */
+.mobile-only { display: none; }

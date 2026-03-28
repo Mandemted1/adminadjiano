@@ -81,7 +81,7 @@ export default function EditorialsPage() {
     <AdminShell>
       <h1 style={{ fontFamily: "var(--font-inria)", fontSize: "2rem", fontWeight: 400, marginBottom: "2rem" }}>Editorial Images</h1>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: "1.5rem", alignItems: "start" }}>
+      <div className="r-form-list">
 
         {/* Create */}
         <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5", padding: "1.5rem" }}>

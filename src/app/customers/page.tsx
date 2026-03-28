@@ -31,7 +31,8 @@ export default async function CustomersPage() {
     <AdminShell>
       <h1 style={{ fontFamily: "var(--font-inria)", fontSize: "2rem", fontWeight: 400, marginBottom: "2rem" }}>Customers</h1>
 
-      <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5" }}>
+      <div className="table-scroll">
+      <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5", minWidth: "460px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "3fr 1fr 1fr 1fr", padding: "0.75rem 1.25rem", borderBottom: "1px solid #f0f0f0", backgroundColor: "#fafafa" }}>
           {["Customer", "Total Spent", "Orders", "Cancelled"].map((h) => (
             <span key={h} style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "#888" }}>{h}</span>
@@ -46,6 +47,7 @@ export default async function CustomersPage() {
             <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", color: c.cancelled > 0 ? "#c62828" : "#888" }}>{c.cancelled}</p>
           </div>
         ))}
+      </div>
       </div>
     </AdminShell>
   );

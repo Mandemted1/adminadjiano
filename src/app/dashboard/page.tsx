@@ -42,13 +42,13 @@ export default async function DashboardPage() {
       <h1 style={{ fontFamily: "var(--font-inria)", fontSize: "2rem", fontWeight: 400, color: "#000", marginBottom: "2rem" }}>Dashboard</h1>
 
       {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", marginBottom: "2.5rem" }}>
+      <div className="r-3col" style={{ marginBottom: "2.5rem" }}>
         {stat("Total Revenue", `GHS ${revenue.toLocaleString()}`)}
         {stat("Orders Today", todayCount)}
         {stat("Total Orders", orders.length)}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
+      <div className="r-2col">
         {/* Top 5 products */}
         <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5", padding: "1.5rem" }}>
           <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "#000", marginBottom: "1.25rem" }}>Top 5 Products</p>

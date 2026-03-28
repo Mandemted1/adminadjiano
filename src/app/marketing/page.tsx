@@ -38,7 +38,7 @@ export default function MarketingPage() {
       <h1 style={{ fontFamily: "var(--font-inria)", fontSize: "2rem", fontWeight: 400, marginBottom: "0.5rem" }}>Marketing</h1>
       <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", color: "#888", marginBottom: "2rem" }}>Send email campaigns to your customers.</p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "1.5rem", alignItems: "start" }}>
+      <div className="r-content-380">
 
         {/* Compose */}
         <div style={{ backgroundColor: "#fff", border: "1px solid #e5e5e5", padding: "1.75rem" }}>
