@@ -20,8 +20,10 @@ export default function LoginPage() {
     // Check admin_users table via API route (server-side)
     const res = await fetch("/api/auth/admin-check", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: authData.user.id }),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${authData.session.access_token}`,
+      },
     });
 
     if (!res.ok) {
